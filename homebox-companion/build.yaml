@@ -1,0 +1,4 @@
+---
+build_from:
+  amd64: ghcr.io/duelion/homebox-companion:latest
+  aarch64: ghcr.io/duelion/homebox-companion:latest

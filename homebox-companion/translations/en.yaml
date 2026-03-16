@@ -1,0 +1,23 @@
+---
+configuration:
+  homebox_url:
+    name: Homebox URL
+    description: URL of your Homebox instance.
+  llm_api_key:
+    name: LLM API Key
+    description: API key for the LLM provider. Use "local" for local models.
+  llm_api_base:
+    name: LLM API Base URL
+    description: Base URL for the LLM API (e.g., Ollama endpoint).
+  llm_model:
+    name: LLM Model
+    description: Model name to use for AI detection and chat.
+  llm_allow_unsafe_models:
+    name: Allow unsafe models
+    description: Skip LiteLLM capability validation for local/unrecognized models.
+  image_quality:
+    name: Image quality
+    description: Compression quality for images uploaded to Homebox.
+  cors_origins:
+    name: CORS origins
+    description: Allowed CORS origins (comma-separated or * for all).
