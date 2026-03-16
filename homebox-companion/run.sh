@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-set -e
+set -euo pipefail
 
 # Read add-on options from /data/options.json (populated by HA Supervisor)
 CONFIG_PATH="/data/options.json"
@@ -18,6 +18,18 @@ if [ -f "$CONFIG_PATH" ]; then
     export HBC_CORS_ORIGINS="$(jq -r '.cors_origins // ""' "$CONFIG_PATH")"
 fi
 
+# Validate URL scheme if provided (prevent file:// or other dangerous schemes)
+if [ -n "${HBC_HOMEBOX_URL:-}" ]; then
+    case "$HBC_HOMEBOX_URL" in
+        http://*|https://*)
+            ;;
+        *)
+            echo "ERROR: homebox_url must use http:// or https:// scheme" >&2
+            exit 1
+            ;;
+    esac
+fi
+
 # Bind to the ingress port
 export HBC_SERVER_HOST="0.0.0.0"
 export HBC_SERVER_PORT="8000"
@@ -29,6 +41,7 @@ echo "Starting Homebox Companion..."
 echo "  Homebox URL: ${HBC_HOMEBOX_URL:-not set}"
 echo "  LLM Model:   ${HBC_LLM_MODEL}"
 echo "  LLM Base:    ${HBC_LLM_API_BASE:-default}"
+echo "  API Key:     [configured]"
 
 # Start the application (upstream entrypoint)
 exec python -m homebox_companion.main

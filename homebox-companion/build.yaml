@@ -1,4 +1,6 @@
 ---
+# TODO: Pin to a versioned tag or sha256 digest for reproducible builds
+# e.g. ghcr.io/duelion/homebox-companion:1.0.0@sha256:abcdef...
 build_from:
   amd64: ghcr.io/duelion/homebox-companion:latest
   aarch64: ghcr.io/duelion/homebox-companion:latest

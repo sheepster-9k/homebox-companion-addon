@@ -56,7 +56,6 @@ Then install **Homebox Companion** from the add-on store.
 
 This wrapper is licensed under **GPL-3.0** to comply with the upstream license. See [LICENSE](LICENSE) for the full text.
 
-The wrapper files in this repository (config.yaml, run.sh, Dockerfile, build.yaml) are original work by [sheepster-9k](https://github.com/sheepster-9k), released under the same GPL-3.0 terms.
 
 ## Related Projects
 

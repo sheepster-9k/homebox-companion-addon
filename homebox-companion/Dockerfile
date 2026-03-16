@@ -15,4 +15,6 @@ RUN if command -v apk >/dev/null 2>&1; then \
 COPY run.sh /run.sh
 RUN chmod +x /run.sh
 
+# Drop unnecessary capabilities; run.sh handles binding to unprivileged port 8000
+# Note: HA Supervisor manages container isolation, but least-privilege is good hygiene
 CMD ["/run.sh"]
