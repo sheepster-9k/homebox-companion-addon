@@ -15,13 +15,12 @@ panel_icon: "mdi:package-variant-closed-plus"
 panel_title: "HB Companion"
 homeassistant_api: true
 options:
-  homebox_url: ""
   llm_api_key: "local"
   llm_api_base: ""
   llm_model: "qwen3-vl:30b"
   llm_allow_unsafe_models: true
   image_quality: "medium"
-  cors_origins: "*"
+  cors_origins: ""
 schema:
   homebox_url: url?
   llm_api_key: str

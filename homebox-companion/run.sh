@@ -5,13 +5,17 @@ set -e
 CONFIG_PATH="/data/options.json"
 
 if [ -f "$CONFIG_PATH" ]; then
-    export HBC_HOMEBOX_URL=$(jq -r '.homebox_url // ""' "$CONFIG_PATH")
-    export HBC_LLM_API_KEY=$(jq -r '.llm_api_key // "local"' "$CONFIG_PATH")
-    export HBC_LLM_API_BASE=$(jq -r '.llm_api_base // ""' "$CONFIG_PATH")
-    export HBC_LLM_MODEL=$(jq -r '.llm_model // "qwen3-vl:30b"' "$CONFIG_PATH")
-    export HBC_LLM_ALLOW_UNSAFE_MODELS=$(jq -r '.llm_allow_unsafe_models // true' "$CONFIG_PATH")
-    export HBC_IMAGE_QUALITY=$(jq -r '.image_quality // "medium"' "$CONFIG_PATH")
-    export HBC_CORS_ORIGINS=$(jq -r '.cors_origins // "*"' "$CONFIG_PATH")
+    if ! jq empty "$CONFIG_PATH" 2>/dev/null; then
+        echo "ERROR: $CONFIG_PATH is not valid JSON" >&2
+        exit 1
+    fi
+    export HBC_HOMEBOX_URL="$(jq -r '.homebox_url // ""' "$CONFIG_PATH")"
+    export HBC_LLM_API_KEY="$(jq -r '.llm_api_key // "local"' "$CONFIG_PATH")"
+    export HBC_LLM_API_BASE="$(jq -r '.llm_api_base // ""' "$CONFIG_PATH")"
+    export HBC_LLM_MODEL="$(jq -r '.llm_model // "qwen3-vl:30b"' "$CONFIG_PATH")"
+    export HBC_LLM_ALLOW_UNSAFE_MODELS="$(jq -r '.llm_allow_unsafe_models // true' "$CONFIG_PATH")"
+    export HBC_IMAGE_QUALITY="$(jq -r '.image_quality // "medium"' "$CONFIG_PATH")"
+    export HBC_CORS_ORIGINS="$(jq -r '.cors_origins // ""' "$CONFIG_PATH")"
 fi
 
 # Bind to the ingress port
