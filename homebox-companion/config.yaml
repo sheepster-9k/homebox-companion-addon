@@ -2,7 +2,7 @@
 name: "Homebox Companion"
 description: "AI-powered inventory companion for Homebox"
 version: "1.0.0"
-slug: "homebox_companion"
+slug: "homebox-companion"
 url: "https://github.com/sheepster-9k/homebox-companion-addon"
 arch:
   - amd64
@@ -14,7 +14,6 @@ ingress_port: 8000
 panel_icon: "mdi:package-variant-closed-plus"
 panel_title: "HB Companion"
 homeassistant_api: true
-hassio_api: true
 options:
   homebox_url: ""
   llm_api_key: "local"
@@ -24,7 +23,7 @@ options:
   image_quality: "medium"
   cors_origins: "*"
 schema:
-  homebox_url: url
+  homebox_url: url?
   llm_api_key: str
   llm_api_base: str?
   llm_model: str
