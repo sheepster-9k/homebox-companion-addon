@@ -5,11 +5,11 @@ set -e
 CONFIG_PATH="/data/options.json"
 
 if [ -f "$CONFIG_PATH" ]; then
-    export HBC_HOMEBOX_URL=$(jq -r '.homebox_url // "http://localhost:7745"' "$CONFIG_PATH")
+    export HBC_HOMEBOX_URL=$(jq -r '.homebox_url // ""' "$CONFIG_PATH")
     export HBC_LLM_API_KEY=$(jq -r '.llm_api_key // "local"' "$CONFIG_PATH")
-    export HBC_LLM_API_BASE=$(jq -r '.llm_api_base // empty' "$CONFIG_PATH")
+    export HBC_LLM_API_BASE=$(jq -r '.llm_api_base // ""' "$CONFIG_PATH")
     export HBC_LLM_MODEL=$(jq -r '.llm_model // "qwen3-vl:30b"' "$CONFIG_PATH")
-    export HBC_LLM_ALLOW_UNSAFE_MODELS=$(jq -r '.llm_allow_unsafe_models // "true"' "$CONFIG_PATH")
+    export HBC_LLM_ALLOW_UNSAFE_MODELS=$(jq -r '.llm_allow_unsafe_models // true' "$CONFIG_PATH")
     export HBC_IMAGE_QUALITY=$(jq -r '.image_quality // "medium"' "$CONFIG_PATH")
     export HBC_CORS_ORIGINS=$(jq -r '.cors_origins // "*"' "$CONFIG_PATH")
 fi
@@ -22,7 +22,7 @@ export HBC_SERVER_PORT="8000"
 export HBC_DISABLE_UPDATE_CHECK="true"
 
 echo "Starting Homebox Companion..."
-echo "  Homebox URL: ${HBC_HOMEBOX_URL}"
+echo "  Homebox URL: ${HBC_HOMEBOX_URL:-not set}"
 echo "  LLM Model:   ${HBC_LLM_MODEL}"
 echo "  LLM Base:    ${HBC_LLM_API_BASE:-default}"
 

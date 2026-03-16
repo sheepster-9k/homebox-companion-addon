@@ -1,25 +1,24 @@
 ---
 name: "Homebox Companion"
-description: "AI-powered inventory companion for Homebox — photo capture, item detection, and chat assistant."
+description: "AI-powered inventory companion for Homebox"
 version: "1.0.0"
-slug: "homebox-companion"
-url: "https://github.com/Duelion/homebox-companion"
-init: false
+slug: "homebox_companion"
+url: "https://github.com/sheepster-9k/homebox-companion-addon"
 arch:
   - amd64
   - aarch64
+startup: application
+init: false
 ingress: true
 ingress_port: 8000
 panel_icon: "mdi:package-variant-closed-plus"
 panel_title: "HB Companion"
-ports:
-  8000/tcp: null
-ports_description:
-  8000/tcp: "Web UI (ingress only)"
+homeassistant_api: true
+hassio_api: true
 options:
-  homebox_url: "https://hb.neon-sheep.net"
+  homebox_url: ""
   llm_api_key: "local"
-  llm_api_base: "http://192.168.1.146:11434"
+  llm_api_base: ""
   llm_model: "qwen3-vl:30b"
   llm_allow_unsafe_models: true
   image_quality: "medium"
@@ -27,7 +26,7 @@ options:
 schema:
   homebox_url: url
   llm_api_key: str
-  llm_api_base: url?
+  llm_api_base: str?
   llm_model: str
   llm_allow_unsafe_models: bool
   image_quality: list(raw|high|medium|low)
