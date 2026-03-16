@@ -18,17 +18,20 @@ if [ -f "$CONFIG_PATH" ]; then
     export HBC_CORS_ORIGINS="$(jq -r '.cors_origins // ""' "$CONFIG_PATH")"
 fi
 
-# Validate URL scheme if provided (prevent file:// or other dangerous schemes)
-if [ -n "${HBC_HOMEBOX_URL:-}" ]; then
-    case "$HBC_HOMEBOX_URL" in
-        http://*|https://*)
-            ;;
-        *)
-            echo "ERROR: homebox_url must use http:// or https:// scheme" >&2
-            exit 1
-            ;;
-    esac
-fi
+# Validate URL schemes (prevent file:// or other dangerous schemes)
+for _url_var in HBC_HOMEBOX_URL HBC_LLM_API_BASE; do
+    _url_val="${!_url_var:-}"
+    if [ -n "$_url_val" ]; then
+        case "$_url_val" in
+            http://*|https://*)
+                ;;
+            *)
+                echo "ERROR: $_url_var must use http:// or https:// scheme" >&2
+                exit 1
+                ;;
+        esac
+    fi
+done
 
 # Bind to the ingress port
 export HBC_SERVER_HOST="0.0.0.0"
@@ -43,5 +46,6 @@ echo "  LLM Model:   ${HBC_LLM_MODEL}"
 echo "  LLM Base:    ${HBC_LLM_API_BASE:-default}"
 echo "  API Key:     [configured]"
 
-# Start the application (upstream entrypoint)
-exec python -m homebox_companion.main
+# Start the application (upstream uses uv to manage deps + launch)
+cd /app
+exec uv run python -m server.app

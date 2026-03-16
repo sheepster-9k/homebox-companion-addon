@@ -1,20 +1,20 @@
 ARG BUILD_FROM
 FROM ${BUILD_FROM}
 
-# Install bash and jq for config parsing
-# Try Alpine (apk) first, then Debian/Ubuntu (apt-get)
-RUN if command -v apk >/dev/null 2>&1; then \
-        apk add --no-cache bash jq; \
-    elif command -v apt-get >/dev/null 2>&1; then \
-        apt-get update && apt-get install -y --no-install-recommends bash jq \
-        && rm -rf /var/lib/apt/lists/*; \
-    else \
-        echo "WARNING: Unknown package manager, bash/jq may be missing" >&2; \
-    fi
+# Upstream image switches to non-root appuser; we need root to install packages
+USER root
+
+# Install bash and jq for config parsing (upstream base is python:3.12-slim / Debian)
+RUN apt-get update && apt-get install -y --no-install-recommends bash jq \
+    && rm -rf /var/lib/apt/lists/*
+
+# HA Supervisor mounts addon persistent data at /data;
+# upstream app expects /app/data — symlink to bridge the two
+RUN rm -rf /app/data && ln -s /data /app/data
 
 COPY run.sh /run.sh
 RUN chmod +x /run.sh
 
-# Drop unnecessary capabilities; run.sh handles binding to unprivileged port 8000
-# Note: HA Supervisor manages container isolation, but least-privilege is good hygiene
+# Note: HA Supervisor manages container user/isolation;
+# we stay as root so /data mounts are writable
 CMD ["/run.sh"]
